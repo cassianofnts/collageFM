@@ -1,4 +1,11 @@
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.Shape;
+import java.awt.font.GlyphVector;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -19,8 +26,11 @@ public class Imagens {
     
             Graphics2D graphics = novaImagem.createGraphics();
             graphics.drawImage(imagem, 0, 0, null);
-            graphics.drawString(album.getArtistName(), 10, 270);
-            graphics.drawString(album.getAlbumName(), 10, 290);
+            graphics.setFont(new Font("Arial", Font.PLAIN, 12));
+            
+            drawText(graphics, 10, 260, album.getArtistName());
+            drawText(graphics, 10, 280, album.getAlbumName());
+
             return novaImagem;
             
         } catch (Exception e) {
@@ -55,6 +65,29 @@ public class Imagens {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+    }
+
+    public static void drawText(Graphics2D graphics, int x, int y, String text){
+       
+        GlyphVector glyphVector = graphics.getFont().createGlyphVector(graphics.getFontRenderContext(), text);
+        Shape textShape = glyphVector.getOutline();
+
+        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+        RenderingHints.VALUE_ANTIALIAS_ON);
+        graphics.setRenderingHint(RenderingHints.KEY_RENDERING,
+        RenderingHints.VALUE_RENDER_QUALITY);
+
+        AffineTransform oldPosition = graphics.getTransform();
+
+        graphics.setColor(Color.black);
+        graphics.setStroke(new BasicStroke(5.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND));
+        graphics.translate(x, y);
+        graphics.draw(textShape);
+        graphics.setColor(Color.white);
+        graphics.fill(textShape);
+
+        graphics.setTransform(oldPosition);
 
     }
 }
