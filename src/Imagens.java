@@ -1,10 +1,9 @@
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
-import java.awt.Graphics2D;
-import java.awt.Font;
 
 import javax.imageio.ImageIO;
 
@@ -17,11 +16,9 @@ public class Imagens {
         try {
             imagem = ImageIO.read(endereco.toURL());
             novaImagem = new BufferedImage(imagem.getWidth(), imagem.getHeight(), BufferedImage.TRANSLUCENT);
+    
             Graphics2D graphics = novaImagem.createGraphics();
             graphics.drawImage(imagem, 0, 0, null);
-            
-            var fonte = new Font("Arial", Font.BOLD, 12);
-            graphics.setFont(fonte);
             graphics.drawString(album.getArtistName(), 10, 270);
             graphics.drawString(album.getAlbumName(), 10, 290);
             return novaImagem;
